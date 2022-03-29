@@ -134,16 +134,16 @@ void sdb_mainloop() {
      * which may need further parsing
      */
     char *args = cmd + strlen(cmd) + 1;
-    char *arg = NULL;
+    char *arg[20] = {"ini"};
     int arg_cnt = 0;
     if (args >= str_end)  args = NULL;
     else
     {
-      arg = strtok(NULL,str);
-      while(arg != NULL)
+      arg[arg_cnt] = strtok(NULL,str);
+      while(arg[arg_cnt] != NULL)
       {
         arg_cnt ++;
-        arg = strtok(NULL,str);
+        arg[arg_cnt] = strtok(NULL,str);
       }
     }
 #ifdef CONFIG_DEVICE
