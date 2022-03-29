@@ -70,7 +70,9 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_s(char *args) {
-  return -1;
+  int i = atoi(args);
+  cpu_exec(i);
+  return 0;
 }
 
 static int cmd_help(char *args);
@@ -134,17 +136,15 @@ void sdb_mainloop() {
      * which may need further parsing
      */
     char *args = cmd + strlen(cmd) + 1;
-    char *arg[20] = {"ini"};
-    int arg_cnt = 0;
+    // char *arg[20] = {"ini"};
+    // int arg_cnt = 0;
     if (args >= str_end)  args = NULL;
     else
     {
-      arg[arg_cnt] = strtok(NULL,str);
-      while(arg[arg_cnt] != NULL)
-      {
-        arg_cnt ++;
-        arg[arg_cnt] = strtok(NULL,str);
-      }
+      // arg[arg_cnt] = strtok(NULL,str);
+        // arg_cnt ++;
+        // arg[arg_cnt] = strtok(NULL,str);
+      args = strtok(NULL,str);
     }
 #ifdef CONFIG_DEVICE
     extern void sdl_clear_event_queue();
