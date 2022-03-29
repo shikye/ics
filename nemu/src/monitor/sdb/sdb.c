@@ -1,13 +1,45 @@
 #include <isa.h>
 #include <cpu/cpu.h>
+#include <unistd.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include<regex.h>
+#include<string.h>
+#include<stdio.h>
+#include<stdlib.h>
 #include "sdb.h"
 
 static int is_batch_mode = false;
 
 void init_regex();
 void init_wp_pool();
+
+int regx(const char *pattern, char *input)
+{
+    regex_t preg;
+    int cflags = REG_EXTENDED;
+    size_t nmatch = 1;
+    regmatch_t pmatch[1];
+    int eflags = 0;
+    int status = 0;
+    char reserve[10] ;
+    int number = 0;
+
+    regcomp(&preg,pattern,cflags);
+    status = regexec(&preg,input,nmatch,pmatch,eflags);
+
+    regfree(&preg);
+    if(status == 0)
+        {
+            memcpy(reserve,input + pmatch[0].rm_so,pmatch[0].rm_eo - pmatch[0].rm_so);   
+            number = atoi(reserve);
+            return number;
+        }
+    else
+        return -1;
+}
+
+
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
@@ -37,6 +69,10 @@ static int cmd_q(char *args) {
   return -1;
 }
 
+static int cmd_s(char *args) {
+  return -1;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -47,7 +83,7 @@ static struct {
   { "help", "Display informations about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-
+  { "si", "Step n Times", cmd_s}
   /* TODO: Add more commands */
 
 };
@@ -98,10 +134,18 @@ void sdb_mainloop() {
      * which may need further parsing
      */
     char *args = cmd + strlen(cmd) + 1;
-    if (args >= str_end) {
-      args = NULL;
+    char **arg = NULL;
+    int arg_cnt = 0;
+    if (args >= str_end)  args = NULL;
+    else
+    {
+      arg[arg_cnt] = strtok(NULL,str);
+      while(arg[arg_cnt] != NULL)
+      {
+        arg_cnt ++;
+        arg[arg_cnt] = strtok(NULL,str);
+      }
     }
-
 #ifdef CONFIG_DEVICE
     extern void sdl_clear_event_queue();
     sdl_clear_event_queue();
