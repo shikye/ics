@@ -70,8 +70,13 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_s(char *args) {
-  int i = atoi(args);
-  cpu_exec(i);
+  if(args != NULL)
+  {
+    int i = atoi(args);
+    cpu_exec(i);
+  }
+  else
+    cpu_exec(1);
   return 0;
 }
 
@@ -85,7 +90,7 @@ static struct {
   { "help", "Display informations about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-  { "si", "Step n Times", cmd_s}
+  { "si n", "Step n Times", cmd_s}
   /* TODO: Add more commands */
 
 };
@@ -135,9 +140,9 @@ void sdb_mainloop() {
     /* treat the remaining string as the arguments,
      * which may need further parsing
      */
-    char *args = cmd + strlen(cmd) + 1;
-    // char *arg[20] = {"ini"};
-    // int arg_cnt = 0;
+    char *args = cmd + strlen(cmd) + 1;   //cmd and str?
+    char *arg[20] = {"ini"};
+    int arg_cnt = 0;
     if (args >= str_end)  args = NULL;
     else
     {
@@ -145,6 +150,13 @@ void sdb_mainloop() {
         // arg_cnt ++;
         // arg[arg_cnt] = strtok(NULL,str);
       args = strtok(NULL,str);
+      if(args != NULL)
+      {
+        while ((arg[arg_cnt] = strtok(NULL,str)) != NULL)
+        {
+          arg_cnt ++;
+        }
+      }
     }
 #ifdef CONFIG_DEVICE
     extern void sdl_clear_event_queue();
