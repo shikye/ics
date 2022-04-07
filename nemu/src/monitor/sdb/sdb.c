@@ -146,12 +146,14 @@ static int cmd_info(char *args, char* arg_after[20]) {
 static int cmd_x(char *args, char* arg_after[20]) {
   
   word_t read[20];
-  int j = atoi(args);
+  int max = atoi(args);
+  int j = 0;
   int i = 0;
-  while(j --)
+  while(j < max)
   {
     read[i] = pmem_read(atoi(arg_after[0]),4);
-    printf("%8x : %8x\n",read[i], read[i] + 4);
+    for(int k = 0; k<4;k++)
+      printf("%8x : %8x\n",atoi(arg_after[0]) + k + 4*j, read[i]);
     i ++;
   }
   return 0;
