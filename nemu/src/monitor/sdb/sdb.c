@@ -157,13 +157,10 @@ static int cmd_x(char *args, char* arg_after[20]) {
 
     while(j < max)
     {
-      for(int k = 0; k<4;k++)
-      {
-        read[i] = pmem_read(pos,1);
-        printf("0x%8x : %8x\n",pos + k + 4*j, read[i]);
+        read[i] = pmem_read(pos+4*j,4);
+        printf("0x%8x : %8x\n",pos + 4*j, read[i]);
         i ++;
-      }
-      j ++;
+        j ++;
     }
   }
   return 0;
