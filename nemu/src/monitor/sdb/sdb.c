@@ -153,7 +153,7 @@ static int cmd_x(char *args, char* arg_after[20]) {
     char  str1[9] = "ini";
     char  *ptr;
     strncpy(str1,arg_after[0]+2,8);
-    int pos = strtol(str1,&ptr,16);
+    u_int pos = strtol(str1,&ptr,16);
 
     while(j < max)
     {
