@@ -84,6 +84,26 @@ static int cmd_x(char *args, char* arg_after[20]) {
   return -1;
 }
 
+static int cmd_info(char *args, char* arg_after[20]) {
+  if(!strcmp(args,"r"))
+  {
+    for(int i = 0; i < 32; i++)
+      {
+        printf("x[%d] is %u\n", i , cpu.gpr[i]._32);
+      }
+    printf("pc is %u\n",cpu.pc);
+  }
+  else if(!strcmp(args,"w"))
+  {
+  }
+  else
+  {
+    printf("error in info\n");
+  }
+
+  return 0;
+  
+}
 
 // static int cmd_x(char *args, char* arg_after[20]) {
   
@@ -110,7 +130,8 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si", "Step n Times", cmd_s},
-  { "x", "get the neicun", cmd_x}
+  { "x", "get the neicun", cmd_x},
+  { "info", "get r or w", cmd_info}
   /* TODO: Add more commands */
 };
 
