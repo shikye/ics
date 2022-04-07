@@ -158,7 +158,7 @@ static int cmd_x(char *args, char* arg_after[20]) {
     while(j < max)
     {
         read[i] = pmem_read(pos+4*j,4);
-        printf("0x%8x : %8x\n",pos + 4*j, read[i]);
+        printf("0x%08x : %08x\n",pos + 4*j, read[i]);
         i ++;
         j ++;
     }
