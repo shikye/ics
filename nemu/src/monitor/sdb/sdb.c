@@ -8,11 +8,17 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include "sdb.h"
+#include <memory/host.h>
+#include <memory/paddr.h>
 
 static int is_batch_mode = false;
 
 void init_regex();
 void init_wp_pool();
+static word_t pmem_read(paddr_t addr, int len) {
+  word_t ret = host_read(guest_to_host(addr), len);
+  return ret;
+}
 
 char* find_strings(char* str) //eof is the end , use a array to store the return value
 {
@@ -115,9 +121,6 @@ static int cmd_s(char *args, char* arg_after[20]) {
   return 0;
 }
 
-static int cmd_x(char *args, char* arg_after[20]) {
-  return -1;
-}
 
 static int cmd_info(char *args, char* arg_after[20]) {
   if(!strcmp(args,"r"))
@@ -140,19 +143,20 @@ static int cmd_info(char *args, char* arg_after[20]) {
   
 }
 
-// static int cmd_x(char *args, char* arg_after[20]) {
+static int cmd_x(char *args, char* arg_after[20]) {
   
-//   word_t read[20];
-//   int j = atoi(args);
-//   int i = 0;
-//   while(j --)
-//   {
-//     read[i] = pmem_read(atoi(arg_after[0]),1);
-//     printf("%02x : %02x",atoi(arg_after[0])+i,read[i]);
-//     i ++;
-//   }
+  word_t read[20];
+  int j = atoi(args);
+  int i = 0;
+  while(j --)
+  {
+    read[i] = pmem_read(atoi(arg_after[0]),4);
+    printf("%8x : %8x\n",read[i], read[i] + 4);
+    i ++;
+  }
+  return 0;
     
-// }
+}
 
 static int cmd_help(char *args, char* arg_after[20]);
 
