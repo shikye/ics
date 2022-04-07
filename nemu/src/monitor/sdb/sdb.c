@@ -151,10 +151,13 @@ static int cmd_x(char *args, char* arg_after[20]) {
   int i = 0;
   while(j < max)
   {
-    read[i] = pmem_read(atoi(arg_after[0]),4);
     for(int k = 0; k<4;k++)
+    {
+      read[i] = pmem_read(atoi(arg_after[0]),1);
       printf("%8x : %8x\n",atoi(arg_after[0]) + k + 4*j, read[i]);
-    i ++;
+      i ++;
+    }
+    j ++;
   }
   return 0;
     
