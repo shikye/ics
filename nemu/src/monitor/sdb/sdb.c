@@ -14,6 +14,41 @@ static int is_batch_mode = false;
 void init_regex();
 void init_wp_pool();
 
+char* find_strings(char* str) //eof is the end , use a array to store the return value
+{
+    static int i = 0;
+    static char arg[10];
+    int  cnt = 0;
+    memset(arg,0,sizeof(arg));
+    if(str[i] != '\0')
+    {
+        while(str[i] != '\0')
+        {
+            if(str[i] != 32)
+            {
+                arg[cnt] = str[i];       
+                cnt ++;
+                i++;
+            }
+            else
+            {
+                arg[cnt] = '\0';
+                i++;
+                cnt = 0;
+                return arg;
+            }       
+        }
+        arg[cnt] = '\0';
+        return arg;
+    }
+    else
+    {
+        i = 0;
+        return "eof";
+    }
+}
+
+
 int regx(const char *pattern, char *input)
 {
     regex_t preg;
@@ -186,9 +221,7 @@ void sdb_mainloop() {
     if (args >= str_end)  args = NULL;
     else
     {
-      // arg[arg_cnt] = strtok(NULL,str);
-        // arg_cnt ++;
-        // arg[arg_cnt] = strtok(NULL,str);
+      
       args = strtok(NULL,str);
       if(args != NULL)
       {
