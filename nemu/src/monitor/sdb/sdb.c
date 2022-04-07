@@ -91,7 +91,7 @@ static int cmd_info(char *args, char* arg_after[20]) {
       {
         printf("x[%d]\t is %u\n", i , cpu.gpr[i]._32);
       }
-    printf("pc\t\t is %u\n",cpu.pc);
+    printf("pc\t is %u\n",cpu.pc);
   }
   else if(!strcmp(args,"w"))
   {
