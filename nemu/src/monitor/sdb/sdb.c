@@ -181,7 +181,7 @@ void sdb_mainloop() {
      * which may need further parsing
      */
     char *args = cmd + strlen(cmd) + 1;   //cmd and str?
-    char *arg_after[20] = {"ini"};
+    char *arg_after[20] = {NULL};
     int arg_cnt = 0;
     if (args >= str_end)  args = NULL;
     else
