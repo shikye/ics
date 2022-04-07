@@ -149,15 +149,22 @@ static int cmd_x(char *args, char* arg_after[20]) {
   int max = atoi(args);
   int j = 0;
   int i = 0;
-  while(j < max)
-  {
-    for(int k = 0; k<4;k++)
+  if(arg_after[0][1] == 'x'){
+    char  str1[9] = "ini";
+    char  *ptr;
+    strncpy(str1,arg_after[0],8);
+    int pos = strtol(str1,&ptr,16);
+
+    while(j < max)
     {
-      read[i] = pmem_read(atoi(arg_after[0]),1);
-      printf("%8x : %8x\n",atoi(arg_after[0]) + k + 4*j, read[i]);
-      i ++;
+      for(int k = 0; k<4;k++)
+      {
+        read[i] = pmem_read(pos,1);
+        printf("0x%8x : %8x\n",pos + k + 4*j, read[i]);
+        i ++;
+      }
+      j ++;
     }
-    j ++;
   }
   return 0;
     
