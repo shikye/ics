@@ -222,7 +222,7 @@ void sdb_mainloop() {
     else
     {
       
-      args = strtok(NULL,str);
+      args = strtok(NULL," ");
       if(args != NULL)
       {
         while ((arg_after[arg_cnt] = strtok(NULL," ")) != NULL)
