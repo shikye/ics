@@ -89,7 +89,7 @@ static int cmd_info(char *args, char* arg_after[20]) {
   {
     for(int i = 0; i < 32; i++)
       {
-        printf("x[%d]\t is %u\n", i , cpu.gpr[i]._32);
+        printf("r[%d]\t is %u\n", i , cpu.gpr[i]._32);
       }
     printf("pc\t is %u\n",cpu.pc);
   }
