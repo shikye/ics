@@ -59,17 +59,17 @@ static char* rl_gets() {
   return line_read;
 }
 
-static int cmd_c(char *args) {
+static int cmd_c(char *args, char* arg_after[20]) {
   cpu_exec(-1);
   return 0;
 }
 
 
-static int cmd_q(char *args) {
+static int cmd_q(char *args, char* arg_after[20]) {
   return -1;
 }
 
-static int cmd_s(char *args) {
+static int cmd_s(char *args, char* arg_after[20]) {
   if(args != NULL)
   {
     int i = atoi(args);
@@ -80,24 +80,43 @@ static int cmd_s(char *args) {
   return 0;
 }
 
-static int cmd_help(char *args);
+static int cmd_x(char *args, char* arg_after[20]) {
+  return -1;
+}
+
+
+// static int cmd_x(char *args, char* arg_after[20]) {
+  
+//   word_t read[20];
+//   int j = atoi(args);
+//   int i = 0;
+//   while(j --)
+//   {
+//     read[i] = pmem_read(atoi(arg_after[0]),1);
+//     printf("%02x : %02x",atoi(arg_after[0])+i,read[i]);
+//     i ++;
+//   }
+    
+// }
+
+static int cmd_help(char *args, char* arg_after[20]);
 
 static struct {
   const char *name;
   const char *description;
-  int (*handler) (char *);
+  int (*handler) (char *,char* arg_after[20]);
 } cmd_table [] = {
   { "help", "Display informations about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-  { "si", "Step n Times", cmd_s}
+  { "si", "Step n Times", cmd_s},
+  { "x", "get the neicun", cmd_x}
   /* TODO: Add more commands */
-
 };
 
 #define NR_CMD ARRLEN(cmd_table)
 
-static int cmd_help(char *args) {
+static int cmd_help(char *args, char* arg_after[20]) {
   /* extract the first argument */
   char *arg = strtok(NULL, " ");
   int i;
@@ -126,7 +145,7 @@ void sdb_set_batch_mode() {
 
 void sdb_mainloop() {
   if (is_batch_mode) {
-    cmd_c(NULL);
+    cmd_c(NULL,NULL);
     return;
   }
 
@@ -141,7 +160,7 @@ void sdb_mainloop() {
      * which may need further parsing
      */
     char *args = cmd + strlen(cmd) + 1;   //cmd and str?
-    char *arg[20] = {"ini"};
+    char *arg_after[20] = {"ini"};
     int arg_cnt = 0;
     if (args >= str_end)  args = NULL;
     else
@@ -152,7 +171,7 @@ void sdb_mainloop() {
       args = strtok(NULL,str);
       if(args != NULL)
       {
-        while ((arg[arg_cnt] = strtok(NULL,str)) != NULL)
+        while ((arg_after[arg_cnt] = strtok(NULL,str)) != NULL)
         {
           arg_cnt ++;
         }
@@ -166,7 +185,7 @@ void sdb_mainloop() {
     int i;
     for (i = 0; i < NR_CMD; i ++) {
       if (strcmp(cmd, cmd_table[i].name) == 0) {
-        if (cmd_table[i].handler(args) < 0) { return; }
+        if (cmd_table[i].handler(args,arg_after) < 0) { return; }
         break;
       }
     }
