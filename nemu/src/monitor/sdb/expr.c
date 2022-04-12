@@ -26,7 +26,7 @@ static struct rule {
   {"\\+", '+'},         // plus
   {"==", TK_EQ},        // equal
   {"0x[0-9]{1,8}", TK_IMED_HEX },     //HEX 0x___
-  {"[^0x][0-9]{1,8}", TK_IMED_DEC},  //DEC nn     //zhengzaibiaodashi youwenti
+  {"[^0x][0-9]+", TK_IMED_DEC},  //DEC nn     //zhengzaibiaodashi youwenti
   {"-", '-'},
   {"\\*", '*'},
   {"/", '/'},
