@@ -25,8 +25,8 @@ static struct rule {
   {" +", TK_NOTYPE},    // spaces
   {"\\+", '+'},         // plus
   {"==", TK_EQ},        // equal
-  {"(\\?<=0x)[0-9]{1,8}", TK_IMED_HEX },     //HEX 0x___
-  {"(\\?<!0x[0-9]*)[0-9]+(\\?\\!x)", TK_IMED_DEC},  //DEC nn
+  {"0x[0-9]{1,8}", TK_IMED_HEX },     //HEX 0x___
+  {"[^0x][0-9]{1,8}", TK_IMED_DEC},  //DEC nn     //zhengzaibiaodashi youwenti
   {"-", '-'},
   {"\\*", '*'},
   {"/", '/'},
@@ -163,7 +163,7 @@ static bool make_token(char *e) {
         switch (rules[i].token_type) {
 case TK_NOTYPE: ; break;
 case '+':tokens[token_numbers].type='+';token_numbers++; break;
-case TK_IMED_HEX:tokens[token_numbers].type=TK_IMED_HEX;strcpy(tokens[token_numbers].str,rules[i].regex);token_numbers++; break;
+case TK_IMED_HEX:tokens[token_numbers].type=TK_IMED_HEX;strcpy(tokens[token_numbers].str,rules[i].regex + 2);token_numbers++; break;
 case TK_IMED_DEC:tokens[token_numbers].type=TK_IMED_DEC;strcpy(tokens[token_numbers].str,rules[i].regex);token_numbers++; break;
 case '-':tokens[token_numbers].type='-';token_numbers++; break;
 case '*':tokens[token_numbers].type='*';token_numbers++; break;
