@@ -163,8 +163,8 @@ static bool make_token(char *e) {
         switch (rules[i].token_type) {
 case TK_NOTYPE: ; break;
 case '+':tokens[token_numbers].type='+';token_numbers++; break;
-case TK_IMED_HEX:tokens[token_numbers].type=TK_IMED_HEX;strcpy(tokens[token_numbers].str,rules[i].regex + 2);token_numbers++; break;
-case TK_IMED_DEC:tokens[token_numbers].type=TK_IMED_DEC;strcpy(tokens[token_numbers].str,rules[i].regex);token_numbers++; break;
+case TK_IMED_HEX:tokens[token_numbers].type=TK_IMED_HEX;strncpy(tokens[token_numbers].str,substr_start,pmatch.rm_eo - pmatch.rm_so);token_numbers++; break;
+case TK_IMED_DEC:tokens[token_numbers].type=TK_IMED_DEC;strncpy(tokens[token_numbers].str,substr_start,pmatch.rm_eo - pmatch.rm_so);token_numbers++; break;
 case '-':tokens[token_numbers].type='-';token_numbers++; break;
 case '*':tokens[token_numbers].type='*';token_numbers++; break;
 case '/':tokens[token_numbers].type='/';token_numbers++; break;
