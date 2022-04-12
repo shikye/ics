@@ -196,7 +196,7 @@ word_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  int front = 0, rear = token_numbers;
+  int front = 1, rear = token_numbers;
   word_t result = eval(front,rear);
 
   token_numbers = 0;
