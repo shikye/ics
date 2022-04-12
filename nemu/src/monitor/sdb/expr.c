@@ -78,11 +78,15 @@ word_t eval(int p , int q)
   int right_cir_cnt = 0;
   int left_circle[5] = {-1,-1,-1,-1,-1};
   int left_cir_cnt = 0;
+  char *ptr;
 
   if( p > q )
     return -1; //fail
   else if(p == q){
-    return atoi(tokens[p].str);
+    if(tokens[p].type ==  TK_IMED_HEX)
+      return strtol(tokens[p].str,&ptr,16);
+    else
+      return atoi(tokens[p].str);
   }
   else if(check_parenttheses(p,q) == true){
     return eval(p+1,q-1);
