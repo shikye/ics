@@ -240,8 +240,11 @@ void sdb_mainloop() {
       args = strtok(NULL," ");
       if(*(args + strlen(args) + 1) != '\0')
         arg_after = args + strlen(args) + 1;
-      while(*arg_after == ' ')
-        arg_after ++;
+      if (arg_after >= str_end)
+        arg_after = NULL;
+      else
+        while(*arg_after == ' ')
+          arg_after ++;
     }
 #ifdef CONFIG_DEVICE
     extern void sdl_clear_event_queue();
