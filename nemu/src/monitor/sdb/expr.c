@@ -61,12 +61,84 @@ typedef struct token {
 } Token;
 
 static Token tokens[32] __attribute__((used)) = {};
+static int token_numbers = 0;
 static int nr_token __attribute__((used))  = 0;
+
+bool check_parenttheses(int p, int q)
+{
+  if(tokens[p].type == '(' && tokens[q].type == ')')
+    return true;
+  else return false;
+}
+
+word_t eval(int p , int q)
+{
+  int position = 0;
+  int right_circle[5] = {-1,-1,-1,-1,-1};
+  int right_cir_cnt = 0;
+  int left_circle[5] = {-1,-1,-1,-1,-1};
+  int left_cir_cnt = 0;
+
+  if( p > q )
+    return -1; //fail
+  else if(p == q){
+    return atoi(tokens[p].str);
+  }
+  else if(check_parenttheses(p,q) == true){
+    return eval(p+1,q-1);
+  }
+  else if(tokens[q].type == '(')
+  {
+    return -1;  //fail
+  }
+  else if(tokens[q].type == ')')
+  {
+    position = q;
+    while(position)
+    {
+      if(tokens[position].type == ')')
+      {
+        right_circle[right_cir_cnt] = position;
+        right_cir_cnt ++;
+      }
+      if(tokens[position].type == '(')
+      {
+        left_circle[left_cir_cnt] = position;
+        left_cir_cnt ++;
+        if(left_cir_cnt > right_cir_cnt)
+          return -1; //fail
+      }
+    }
+    return eval(left_circle[0] , right_circle[0]);
+  }
+  else{
+    position = q;
+    while(position)
+    {
+      if(tokens[position].type == '+')
+        return eval(p,position-1)+eval(position+1,q);
+      else if(tokens[position].type == '-')
+        return eval(p,position-1)-eval(position+1,q);
+      position --;
+    }
+    position = q;
+    while(position)
+    {
+      if(tokens[position].type == '*')
+        return eval(p,position-1)*eval(position+1,q);
+      else if(tokens[position].type == '/')
+        return eval(p,position-1)/eval(position+1,q);
+      position --;
+    }
+  }
+  return -1; //fail
+}
+
+
 
 static bool make_token(char *e) {
   int position = 0;
   int i;
-  int j = 0;
   regmatch_t pmatch;
 
   nr_token = 0;
@@ -90,14 +162,14 @@ static bool make_token(char *e) {
 
         switch (rules[i].token_type) {
 case TK_NOTYPE: ; break;
-case '+':tokens[j].type='+';j++; break;
-case TK_IMED_HEX:tokens[j].type=TK_IMED_HEX;strcpy(tokens[j].str,rules[i].regex);j++; break;
-case TK_IMED_DEC:tokens[j].type=TK_IMED_DEC;strcpy(tokens[j].str,rules[i].regex);j++; break;
-case '-':tokens[j].type='-';j++; break;
-case '*':tokens[j].type='*';j++; break;
-case '/':tokens[j].type='/';j++; break;
-case TK_LEFT_BRA:tokens[j].type='(';j++ ; break;
-case TK_RIGHT_BRA:tokens[j].type=')';j++ ; break;
+case '+':tokens[token_numbers].type='+';token_numbers++; break;
+case TK_IMED_HEX:tokens[token_numbers].type=TK_IMED_HEX;strcpy(tokens[token_numbers].str,rules[i].regex);token_numbers++; break;
+case TK_IMED_DEC:tokens[token_numbers].type=TK_IMED_DEC;strcpy(tokens[token_numbers].str,rules[i].regex);token_numbers++; break;
+case '-':tokens[token_numbers].type='-';token_numbers++; break;
+case '*':tokens[token_numbers].type='*';token_numbers++; break;
+case '/':tokens[token_numbers].type='/';token_numbers++; break;
+case TK_LEFT_BRA:tokens[token_numbers].type='(';token_numbers++ ; break;
+case TK_RIGHT_BRA:tokens[token_numbers].type=')';token_numbers++ ; break;
 
 
             default: ;
@@ -124,7 +196,13 @@ word_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  TODO();
+  int front = 0, rear = token_numbers;
+  word_t result = eval(front,rear);
 
-  return 0;
+  token_numbers = 0;
+  return result;
 }
+
+
+
+
