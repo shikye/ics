@@ -6,7 +6,8 @@
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ,
+  TK_NOTYPE = 256, TK_EQ, TK_IMED_HEX, TK_IMED_DEC,
+  TK_LEFT_BRA, TK_RIGHT_BRA      
 
   /* TODO: Add more token types */
 
@@ -24,6 +25,13 @@ static struct rule {
   {" +", TK_NOTYPE},    // spaces
   {"\\+", '+'},         // plus
   {"==", TK_EQ},        // equal
+  {"(?<=0x)[0-9]{1,8}", TK_IMED_HEX },     //HEX 0x___
+  {"(?<!0x[0-9]*)[0-9]+(?!x)", TK_IMED_DEC},  //DEC nn
+  {"-", '-'},
+  {"\\*", '*'},
+  {"/", '/'},
+  {"\\(", TK_LEFT_BRA},
+  {"\\)", TK_RIGHT_BRA}
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -58,6 +66,7 @@ static int nr_token __attribute__((used))  = 0;
 static bool make_token(char *e) {
   int position = 0;
   int i;
+  int j = 0;
   regmatch_t pmatch;
 
   nr_token = 0;
@@ -80,7 +89,18 @@ static bool make_token(char *e) {
          */
 
         switch (rules[i].token_type) {
-          default: TODO();
+case TK_NOTYPE: ; break;
+case '+':tokens[j].type='+';j++; break;
+case TK_IMED_HEX:tokens[j].type=TK_IMED_HEX;strcpy(tokens[j].str,rules[i].regex);j++; break;
+case TK_IMED_DEC:tokens[j].type=TK_IMED_DEC;strcpy(tokens[j].str,rules[i].regex);j++; break;
+case '-':tokens[j].type='-';j++; break;
+case '*':tokens[j].type='*';j++; break;
+case '/':tokens[j].type='/';j++; break;
+case TK_LEFT_BRA:tokens[j].type='(';j++ ; break;
+case TK_RIGHT_BRA:tokens[j].type=')';j++ ; break;
+
+
+            default: ;
         }
 
         break;
