@@ -238,13 +238,9 @@ void sdb_mainloop() {
     else
     {
       args = strtok(NULL," ");
-      if(*(args + strlen(args) + 1) != '\0')
-        arg_after = args + strlen(args) + 1;
-      if (arg_after >= str_end)
-        arg_after = NULL;
-      else
-        while(*arg_after == ' ')               //bu neng fang wen *0x0
-          arg_after ++;
+      arg_after = strtok(NULL," ");
+      if(arg_after != NULL)
+        *(arg_after + strlen(arg_after)) = ' ';
     }
 #ifdef CONFIG_DEVICE
     extern void sdl_clear_event_queue();
