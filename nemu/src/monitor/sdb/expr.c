@@ -131,7 +131,7 @@ word_t eval(int p , int q)
       position --;
     }
   }
-  return -1; //fail
+  return -1; //faill
 }
 
 

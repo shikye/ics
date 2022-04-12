@@ -100,17 +100,17 @@ static char* rl_gets() {
   return line_read;
 }
 
-static int cmd_c(char *args, char* arg_after[20]) {
+static int cmd_c(char *args, char* arg_after) {
   cpu_exec(-1);
   return 0;
 }
 
 
-static int cmd_q(char *args, char* arg_after[20]) {
+static int cmd_q(char *args, char* arg_after) {
   return -1;
 }
 
-static int cmd_s(char *args, char* arg_after[20]) {
+static int cmd_s(char *args, char* arg_after) {
   if(args != NULL)
   {
     int i = atoi(args);
@@ -122,7 +122,7 @@ static int cmd_s(char *args, char* arg_after[20]) {
 }
 
 
-static int cmd_info(char *args, char* arg_after[20]) {
+static int cmd_info(char *args, char* arg_after) {
   if(!strcmp(args,"r"))
   {
     for(int i = 0; i < 32; i++)
@@ -143,36 +143,40 @@ static int cmd_info(char *args, char* arg_after[20]) {
   
 }
 
-static int cmd_x(char *args, char* arg_after[20]) {
+static int cmd_x(char *args, char* arg_after) {
   
   word_t read[20];
   int max = atoi(args);
   int j = 0;
   int i = 0;
-  if(arg_after[0][1] == 'x'){
-    char  str1[9] = "ini";
-    char  *ptr;
-    strncpy(str1,arg_after[0]+2,8);
-    u_int pos = strtol(str1,&ptr,16);
+  bool suc = true; 
+  bool* flag = &suc;
+  
+  u_int pos = expr(arg_after,flag);
+  if (*flag == false)
+    return -1; //fail
 
-    while(j < max)
-    {
-        read[i] = pmem_read(pos+4*j,4);
-        printf("0x%08x : %08x\n",pos + 4*j, read[i]);
-        i ++;
-        j ++;
-    }
+  while(j < max)
+  {
+      read[i] = pmem_read(pos+4*j,4);
+      printf("0x%08x : %08x\n",pos + 4*j, read[i]);
+      i ++;
+      j ++;
   }
+  
+  
+
+
   return 0;
     
 }
 
-static int cmd_help(char *args, char* arg_after[20]);
+static int cmd_help(char *args, char* arg_after);
 
 static struct {
   const char *name;
   const char *description;
-  int (*handler) (char *,char* arg_after[20]);
+  int (*handler) (char *,char* arg_after);
 } cmd_table [] = {
   { "help", "Display informations about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
@@ -185,7 +189,7 @@ static struct {
 
 #define NR_CMD ARRLEN(cmd_table)
 
-static int cmd_help(char *args, char* arg_after[20]) {
+static int cmd_help(char *args, char* arg_after) {
   /* extract the first argument */
   char *arg = strtok(NULL, " ");
   int i;
@@ -229,20 +233,15 @@ void sdb_mainloop() {
      * which may need further parsing
      */
     char *args = cmd + strlen(cmd) + 1;   //cmd and str?
-    char *arg_after[20] = {NULL};
-    int arg_cnt = 0;
+    char *arg_after = NULL;
     if (args >= str_end)  args = NULL;
     else
     {
-      
       args = strtok(NULL," ");
-      if(args != NULL)
-      {
-        while ((arg_after[arg_cnt] = strtok(NULL," ")) != NULL)
-        {
-          arg_cnt ++;
-        }
-      }
+      if(*(args + strlen(args) + 1) != '\0')
+        arg_after = args + strlen(args) + 1;
+      while(*arg_after == ' ')
+        arg_after ++;
     }
 #ifdef CONFIG_DEVICE
     extern void sdl_clear_event_queue();
