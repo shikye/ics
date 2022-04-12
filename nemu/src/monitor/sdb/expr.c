@@ -25,7 +25,7 @@ static struct rule {
   {" +", TK_NOTYPE},    // spaces
   {"\\+", '+'},         // plus
   {"==", TK_EQ},        // equal
-  {"[0-9]{1,8}", TK_IMED_HEX },     //HEX 0x___
+  {"(?<=0x)x", TK_IMED_HEX },     //HEX 0x___
   {"(?<!0x[0-9]*)[0-9]+(?!x)", TK_IMED_DEC},  //DEC nn
   {"-", '-'},
   {"\\*", '*'},
