@@ -243,7 +243,7 @@ void sdb_mainloop() {
       if (arg_after >= str_end)
         arg_after = NULL;
       else
-        while(*arg_after == ' ')
+        while(*arg_after == ' ')               //bu neng fang wen *0x0
           arg_after ++;
     }
 #ifdef CONFIG_DEVICE
