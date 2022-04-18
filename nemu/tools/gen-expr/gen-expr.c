@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
   int i;
   for (i = 0; i < loop; i ++) {
     gen_rand_expr();
-
+    buf_loc = 0;
     sprintf(code_buf, code_format, buf);
 
     FILE *fp = fopen("/tmp/.code.c", "w");
@@ -98,7 +98,8 @@ int main(int argc, char *argv[]) {
     pclose(fp);
 
     printf("%u %s\n", result, buf);
+
+ //   memset(buf,0,strlen(buf));
   }
-  buf_loc = 0;
   return 0;
 }
