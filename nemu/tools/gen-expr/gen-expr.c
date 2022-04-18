@@ -7,6 +7,7 @@
 
 // this should be enough
 static char buf[65536] = {};
+static int  buf_loc = 0;     
 static char code_buf[65536 + 128] = {}; // a little larger than `buf`
 static char *code_format =
 "#include <stdio.h>\n"
@@ -18,11 +19,54 @@ static char *code_format =
 
 uint32_t choose(uint32_t n)
 {
-  return(rand()%3);
+  return(rand()%n);
 }
 
-static void gen_rand_expr() {
-  buf[0] = '\0';
+void gen_num()
+{
+  int num = rand()%100;
+  char str[20];
+  int bios;
+  sprintf(str,"%d",num);
+  sprintf(buf+buf_loc,"%d",num);
+  bios = strlen(str);
+  buf_loc = buf_loc + bios;
+}
+
+void gen(char para)
+{
+  sprintf(buf+buf_loc,"%c",para);
+  buf_loc = buf_loc + 1;
+}
+
+void gen_rand_op()
+{
+  switch(choose(4))
+  {
+    case 0:
+      sprintf(buf+buf_loc,"%c",'+');
+      break;
+    case 1:
+      sprintf(buf+buf_loc,"%c",'-');
+      break;
+    case 2:
+      sprintf(buf+buf_loc,"%c",'*');
+      break;
+    case 3:
+      sprintf(buf+buf_loc,"%c",'/');
+      break;
+    default:sprintf(buf+buf_loc,"%c",'/');
+
+  }
+  buf_loc = buf_loc + 1;
+}
+
+void gen_rand_expr() {
+  switch (choose(3)) {
+    case 0: gen_num(); break;
+    case 1: gen('('); gen_rand_expr(); gen(')'); break;
+    default: gen_rand_expr(); gen_rand_op(); gen_rand_expr(); break;
+  }
 }
 
 int main(int argc, char *argv[]) {
@@ -55,5 +99,6 @@ int main(int argc, char *argv[]) {
 
     printf("%u %s\n", result, buf);
   }
+  buf_loc = 0;
   return 0;
 }
