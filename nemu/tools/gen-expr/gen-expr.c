@@ -16,6 +16,11 @@ static char *code_format =
 "  return 0; "
 "}";
 
+uint32_t choose(uint32_t n)
+{
+  return(rand()%3);
+}
+
 static void gen_rand_expr() {
   buf[0] = '\0';
 }
