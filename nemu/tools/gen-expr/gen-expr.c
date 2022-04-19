@@ -31,15 +31,15 @@ void gen_num_nozero()
   char str[20];
   int bios;
   while((num = rand()%100) == 0);
-  sprintf(str,"%d",num);
-  sprintf(buf+buf_loc,"%d",num);
+  sprintf(str,"%u",num);
+  sprintf(buf+buf_loc,"%u",num);
   bios = strlen(str);
   buf_loc = buf_loc + bios;
 }
 
 void gen_num()
 {
-  unsigned int num;
+  unsigned int num = rand()%1000;
   char str[20];
   int bios;
   sprintf(str,"%d",num);
@@ -83,9 +83,20 @@ unsigned int gen_rand_expr() //get the value inside ()
  unsigned int r1;
  unsigned int r2;
  switch (choose(3)) {
-    case 0: gen_num(); strncpy(str,loc,buf + buf_loc - loc); r1 = strtoul(str,&ptr,10); return r1; break;
-    case 1: gen('('); gen_rand_expr(); gen(')'); strncpy(str,loc+1,buf+buf_loc-loc-1); r1 =  strtoul(str,&ptr,10); return r1;break;
-    default: r1 = gen_rand_expr(); loc = buf + buf_loc ; gen_rand_op(); 
+    case 0: gen_num();
+            strncpy(str,loc,buf + buf_loc - loc);
+            r1 = strtoul(str,&ptr,10); 
+            return r1; 
+            break;
+    case 1: gen('(');
+            gen_rand_expr();
+            gen(')'); strncpy(str,loc+1,buf+buf_loc-loc-1);
+            r1 =  strtoul(str,&ptr,10);
+            return r1;
+            break;
+    default: r1 = gen_rand_expr();
+             loc = buf + buf_loc ;
+             gen_rand_op(); 
              r2 = gen_rand_expr();
              switch (*loc) {
                 case '+': return r1 + r2;
