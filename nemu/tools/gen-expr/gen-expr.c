@@ -17,7 +17,7 @@ static char *code_format =
 "  return 0; "
 "}";
 
-unsigned int  gen_rand_expr();
+void gen_rand_expr();
 //void gen_rand_expr_nozero();
 
 uint32_t choose(uint32_t n)
@@ -75,7 +75,9 @@ void gen_rand_op()
   buf_loc = buf_loc + 1;
 }
 
-unsigned int gen_rand_expr() //get the value inside ()
+int flag =  0;
+
+void gen_rand_expr() //get the value inside 
 { 
  char* loc = buf + buf_loc; 
  char str[30];
@@ -84,31 +86,14 @@ unsigned int gen_rand_expr() //get the value inside ()
  unsigned int r2;
  switch (choose(3)) {
     case 0: gen_num();
-            strncpy(str,loc,buf + buf_loc - loc);
-            r1 = strtoul(str,&ptr,10); 
-            return r1; 
             break;
     case 1: gen('(');
             gen_rand_expr();
-            gen(')'); strncpy(str,loc+1,buf+buf_loc-loc-1);
-            r1 =  strtoul(str,&ptr,10);
-            return r1;
+            gen(')');
             break;
-    default: r1 = gen_rand_expr();
-             loc = buf + buf_loc ;
-             gen_rand_op(); 
-             r2 = gen_rand_expr();
-             switch (*loc) {
-                case '+': return r1 + r2;
-                case '-': if(r1 == r2 || r1 < r2) return -1; else  return r1 - r2;
-                case '*': return r1 * r2;
-                case '/': if(r1 >= r2)return r1 / r2; else return -1;
-             }
-                  
+    default: gen_rand_op(); 
              break;
   }
-
- return -1;
 }
 
 
@@ -143,47 +128,36 @@ int main(int argc, char *argv[]) {
     sscanf(argv[1], "%d", &loop);
   }
   int i;
-  unsigned int check = 0;
   for (i = 0; i < loop; i ++) {
-    check = gen_rand_expr();
-    /*char * check_point = 0;
-    check_point = buf + buf_loc;
-    int check_result = 0;
-    while(check_point >0)
+    char * loc = buf + buf_loc;
+    char * begin;
+    int    kuohao = 0;
+    while(loc >= buf)
     {
-        if(*check_point == '/')
+        if(*loc == '/')
         {
-            check_result = check_zero(check_point);
-            
+            begin = loc + 1;
+            if(*begin == '0')
+                flag = 1;
+            if(*begin == '(')
+            {    
+                kuohao ++;
+                begin ++;
+
+
+
+            }
+
+
         }
 
-
-        check_point --;
-
+        loc --;
     }
-    */     
 
-
+ 
     buf_loc = 0;
-    if(check == -1)
-    {
-        i ++;
-        memset(buf,0,strlen(buf));
-        continue;
-    }
-    //int check = check_zero();
-    //check_zero_loc = 0;
-    //if(check == -1)
-    //{
-    //    i ++;
-    //    memset(buf,0,strlen(buf));
-    //    continue;
-    // }
-    
-
-
-
-    
+  
+   
     sprintf(code_buf, code_format, buf);
 
     FILE *fp = fopen("/tmp/.code.c", "w");
