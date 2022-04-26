@@ -18,24 +18,12 @@ static char *code_format =
 "}";
 
 void gen_rand_expr();
-//void gen_rand_expr_nozero();
 
 uint32_t choose(uint32_t n)
 {
   return(rand()%n);
 }
 
-void gen_num_nozero()
-{
-  unsigned int num;
-  char str[20];
-  int bios;
-  while((num = rand()%100) == 0);
-  sprintf(str,"%u",num);
-  sprintf(buf+buf_loc,"%u",num);
-  bios = strlen(str);
-  buf_loc = buf_loc + bios;
-}
 
 void gen_num()
 {
@@ -75,15 +63,9 @@ void gen_rand_op()
   buf_loc = buf_loc + 1;
 }
 
-int flag =  0;
 
 void gen_rand_expr() //get the value inside 
 { 
- char* loc = buf + buf_loc; 
- char str[30];
- char* ptr;
- unsigned int r1;
- unsigned int r2;
  switch (choose(3)) {
     case 0: gen_num();
             break;
@@ -91,35 +73,13 @@ void gen_rand_expr() //get the value inside
             gen_rand_expr();
             gen(')');
             break;
-    default: gen_rand_op(); 
+    default:gen_rand_expr(); 
+            gen_rand_op(); 
+            gen_rand_expr();
              break;
   }
 }
 
-
-/*void gen_rand_expr_nozero() 
-{  
- switch (choose(3)) {
-    case 0: gen_num_nozero(); break;
-    case 1: gen('('); gen_rand_expr_nozero(); gen(')'); break;
-    default: gen_rand_expr_nozero(); gen_rand_op(); 
-             gen_rand_expr_nozero();
-             break;
-  }
-}
-*/
-static int check_zero_loc = 0;
-/*int check_zero(char* ptr) // div 0 return -1;
-{
-    char* begin = ptr + 1;
-    char* end;
-    char* loc = begin;
-
-
-
-    
-}
-*/
 int main(int argc, char *argv[]) {
   int seed = time(0);
   srand(seed);
@@ -129,33 +89,8 @@ int main(int argc, char *argv[]) {
   }
   int i;
   for (i = 0; i < loop; i ++) {
-    char * loc = buf + buf_loc;
-    char * begin;
-    int    kuohao = 0;
-    while(loc >= buf)
-    {
-        if(*loc == '/')
-        {
-            begin = loc + 1;
-            if(*begin == '0')
-                flag = 1;
-            if(*begin == '(')
-            {    
-                kuohao ++;
-                begin ++;
 
-
-
-            }
-
-
-        }
-
-        loc --;
-    }
-
- 
-    buf_loc = 0;
+    gen_rand_expr();
   
    
     sprintf(code_buf, code_format, buf);
@@ -178,11 +113,14 @@ int main(int argc, char *argv[]) {
     {
         i ++;
         memset(buf,0,strlen(buf));
+        buf_loc = 0;
         continue;
     }
     printf("%u %s\n", result, buf);
   
     memset(buf,0,strlen(buf));
+
+    buf_loc = 0;
   }
   
   return 0;
