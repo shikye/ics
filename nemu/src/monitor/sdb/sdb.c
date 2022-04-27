@@ -216,11 +216,34 @@ void sdb_set_batch_mode() {
   is_batch_mode = true;
 }
 
-void sdb_mainloop() {
+void sdb_mainloop(char *argv[]) {
   if (is_batch_mode) {
     cmd_c(NULL,NULL);
     return;
   }
+
+  int comp1 = 0;
+  int comp2 = 0;
+  int cnt = 0;
+  int arg_n = 2;
+  bool flag = 0;
+
+    while(argv[arg_n] != NULL)
+    {
+    comp1 = atoi(argv[arg_n]);
+    arg_n ++;
+    comp2 = expr(argv[arg_n],&flag);
+
+    if(comp1 != comp2)
+      printf("error!\n");
+
+    cnt ++;
+    }
+  
+  printf("test %d times",cnt);
+  
+
+  /* Start engine. */
 
   for (char *str; (str = rl_gets()) != NULL; ) {
     char *str_end = str + strlen(str);
