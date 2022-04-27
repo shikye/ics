@@ -221,26 +221,40 @@ void sdb_mainloop(char *argv[]) {
     cmd_c(NULL,NULL);
     return;
   }
-
-  int comp1 = 0;
-  int comp2 = 0;
-  int cnt = 0;
-  int arg_n = 1;
-  bool flag = 0;
-
-    while(argv[arg_n] != NULL)
-    {
-    comp1 = atoi(argv[arg_n]);
-    arg_n ++;
-    comp2 = expr(argv[arg_n],&flag);
-
-    if(comp1 != comp2)
-      printf("error!\n");
-
-    cnt ++;
-    }
   
-  printf("test %d times",cnt);
+
+  char str[500];
+  int str_len = 0;
+  FILE *fp;
+  fp = fopen("file_test","r");
+  char *result;
+  int res;
+  char *expr_value;
+  int exp;
+
+  bool flag = 0;
+  while(feof(fp) == 0){
+    fgets(str,500,fp);
+
+    if(feof(fp) != 0)
+      break;
+
+    str_len = strlen(str);
+    *(str+str_len-1) = '\0';
+
+    result = strtok(str," ");
+    expr_value = strtok(NULL," ");
+
+    res = atoi(result);
+    exp = expr(expr_value,&flag);
+
+    if(res == exp)
+      printf("correct!\n");
+    
+  }
+
+
+  fclose(fp);
   
 
   /* Start engine. */

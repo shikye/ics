@@ -2,7 +2,7 @@
 
 void init_monitor(int, char *[]);
 void am_init_monitor();
-void engine_start(char *argv[]);
+void engine_start();
 int is_exit_status_bad();
 word_t expr(char *e, bool *success);
 
@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
 #endif
 
 
-  engine_start(argv);
+  engine_start();
 
   return is_exit_status_bad();
 
