@@ -11,6 +11,7 @@ int main(int argc, char *argv[]) {
   unsigned int comp1 = 0;
   unsigned int comp2 = 0;
   bool flag = 0;
+  int cnt = 0;
 
   /* Initialize the monitor. */
 //#ifdef CONFIG_TARGET_AM
@@ -27,6 +28,8 @@ int main(int argc, char *argv[]) {
 
     if(comp1 != comp2)
       printf("error!");
+
+    cnt ++;
   }
   
 
@@ -34,6 +37,8 @@ int main(int argc, char *argv[]) {
 //  engine_start();
 //
 //  return is_exit_status_bad();
+
+printf("test %d times",cnt);
 
 return 0;
 }
