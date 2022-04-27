@@ -51,7 +51,7 @@ static long load_img() {
   return size;
 }
 
-static int parse_args(int argc, char *argv[]) {
+/*static int parse_args(int argc, char *argv[]) {
   const struct option table[] = {
     {"batch"    , no_argument      , NULL, 'b'},
     {"log"      , required_argument, NULL, 'l'},
@@ -80,12 +80,12 @@ static int parse_args(int argc, char *argv[]) {
   }
   return 0;
 }
-
+*/
 void init_monitor(int argc, char *argv[]) {
   /* Perform some global initialization. */
 
   /* Parse arguments. */
-  parse_args(argc, argv);
+  //parse_args(argc, argv);
 
   /* Set random seed. */
   init_rand();

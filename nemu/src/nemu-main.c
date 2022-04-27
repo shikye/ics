@@ -14,11 +14,11 @@ int main(int argc, char *argv[]) {
   int cnt = 0;
 
   /* Initialize the monitor. */
-//#ifdef CONFIG_TARGET_AM
-//  am_init_monitor();
-//#else
-//  init_monitor(argc, argv);
-//#endif
+#ifdef CONFIG_TARGET_AM
+  am_init_monitor();
+#else
+  init_monitor(argc, argv);
+#endif
 
   while(argv[arg_n] != NULL)
   {
