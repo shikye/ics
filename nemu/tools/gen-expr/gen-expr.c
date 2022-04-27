@@ -5,6 +5,8 @@
 #include <assert.h>
 #include <string.h>
 
+#define NR_TOKEN 500
+
 // this should be enough
 static char buf[65536] = {};
 static int  buf_loc = 0;     
@@ -12,10 +14,13 @@ static char code_buf[65536 + 128] = {}; // a little larger than `buf`
 static char *code_format =
 "#include <stdio.h>\n"
 "int main() { "
-"  unsigned result = %s; "
+"  unsigned int result = %s; "
 "  printf(\"%%u\", result); "
 "  return 0; "
 "}";
+
+
+int nt = 0;
 
 void gen_rand_expr();
 
@@ -30,6 +35,8 @@ void gen_num()
   unsigned int num = rand()%1000;
   char str[20];
   int bios;
+  if(nt >= NR_TOKEN)
+     return;
   sprintf(str,"%d",num);
   sprintf(buf+buf_loc,"%d",num);
   bios = strlen(str);
@@ -39,12 +46,17 @@ void gen_num()
 
 void gen(char para)
 {
+  if(nt >= NR_TOKEN && para != ')')
+      return;
   sprintf(buf+buf_loc,"%c",para);
   buf_loc = buf_loc + 1;
 }
 
 void gen_rand_op()
 {
+
+  if(nt >= NR_TOKEN)
+      return;
   switch(choose(4))
   {
     case 0:
@@ -66,14 +78,22 @@ void gen_rand_op()
 
 void gen_rand_expr() //get the value inside 
 { 
+ if(nt >= NR_TOKEN)
+     return;
  switch (choose(3)) {
     case 0: gen_num();
             break;
-    case 1: gen('(');
+    case 1: 
+            if(nt + 3 > NR_TOKEN)
+                return;
+            gen('(');
             gen_rand_expr();
             gen(')');
             break;
-    default:gen_rand_expr(); 
+    default:
+            if(nt + 3 > NR_TOKEN)
+                return;
+            gen_rand_expr(); 
             gen_rand_op(); 
             gen_rand_expr();
              break;
@@ -89,6 +109,9 @@ int main(int argc, char *argv[]) {
   }
   int i;
   for (i = 0; i < loop; i ++) {
+
+    nt = 0;
+    buf_loc = 0;
 
     gen_rand_expr();
   
@@ -120,7 +143,7 @@ int main(int argc, char *argv[]) {
   
     memset(buf,0,strlen(buf));
 
-    buf_loc = 0;
+   
   }
   
   return 0;
