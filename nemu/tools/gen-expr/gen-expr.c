@@ -41,6 +41,7 @@ void gen_num()
   sprintf(buf+buf_loc,"%d",num);
   bios = strlen(str);
   buf_loc = buf_loc + bios;
+  ++ nt;
 }
 
 
@@ -50,6 +51,7 @@ void gen(char para)
       return;
   sprintf(buf+buf_loc,"%c",para);
   buf_loc = buf_loc + 1;
+  ++ nt;
 }
 
 void gen_rand_op()
@@ -73,6 +75,7 @@ void gen_rand_op()
       break;
   }
   buf_loc = buf_loc + 1;
+  ++ nt;
 }
 
 

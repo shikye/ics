@@ -223,7 +223,7 @@ void sdb_mainloop(char *argv[]) {
   }
   
 
-  char str[500];
+  char str[65535];
   int str_len = 0;
   FILE *fp;
   fp = fopen("file_test","r");
