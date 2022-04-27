@@ -7,7 +7,7 @@ int is_exit_status_bad();
 word_t expr(char *e, bool *success);
 
 int main(int argc, char *argv[]) {
-  int arg_n = 2;
+  int arg_n = 1;
   unsigned int comp1 = 0;
   unsigned int comp2 = 0;
   bool flag = 0;
