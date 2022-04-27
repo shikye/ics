@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
     comp2 = expr(argv[arg_n],&flag);
 
     if(comp1 != comp2)
-      printf("error!");
+      printf("error!\n");
 
     cnt ++;
   }
@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
 //
 //  return is_exit_status_bad();
 
-printf("test %d times",cnt);
+printf("test %d times\n",cnt);
 
 return 0;
 }
