@@ -234,7 +234,7 @@ void sdb_mainloop(char *argv[]) {
 
   bool flag = 0;
   while(feof(fp) == 0){
-    fgets(str,500,fp);
+    fgets(str,65535,fp);
 
     if(feof(fp) != 0)
       break;
