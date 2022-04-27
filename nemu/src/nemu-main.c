@@ -13,11 +13,11 @@ int main(int argc, char *argv[]) {
   bool flag = 0;
 
   /* Initialize the monitor. */
-#ifdef CONFIG_TARGET_AM
-  am_init_monitor();
-#else
-  init_monitor(argc, argv);
-#endif
+//#ifdef CONFIG_TARGET_AM
+//  am_init_monitor();
+//#else
+//  init_monitor(argc, argv);
+//#endif
 
   while(argv[arg_n] != NULL)
   {
@@ -31,7 +31,9 @@ int main(int argc, char *argv[]) {
   
 
   /* Start engine. */
-  engine_start();
+//  engine_start();
+//
+//  return is_exit_status_bad();
 
-  return is_exit_status_bad();
+return 0;
 }
