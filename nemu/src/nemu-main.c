@@ -7,11 +7,11 @@ int is_exit_status_bad();
 word_t expr(char *e, bool *success);
 
 int main(int argc, char *argv[]) {
-  int arg_n = 1;
+ /* int arg_n = 1;
   unsigned int comp1 = 0;
   unsigned int comp2 = 0;
   bool flag = 0;
-  int cnt = 0;
+  int cnt = 0; */
 
   /* Initialize the monitor. */
 #ifdef CONFIG_TARGET_AM
@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
   init_monitor(argc, argv);
 #endif
 
-  while(argv[arg_n] != NULL)
+/*  while(argv[arg_n] != NULL)
   {
     comp1 = atoi(argv[arg_n]);
     arg_n ++;
@@ -32,13 +32,13 @@ int main(int argc, char *argv[]) {
     cnt ++;
   }
   
-
+*/
   /* Start engine. */
-//  engine_start();
-//
-//  return is_exit_status_bad();
+  engine_start();
 
-printf("test %d times\n",cnt);
+  return is_exit_status_bad();
+
+//printf("test %d times\n",cnt);
 
 return 0;
 }
