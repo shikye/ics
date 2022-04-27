@@ -225,7 +225,7 @@ void sdb_mainloop(char *argv[]) {
   int comp1 = 0;
   int comp2 = 0;
   int cnt = 0;
-  int arg_n = 2;
+  int arg_n = 1;
   bool flag = 0;
 
     while(argv[arg_n] != NULL)
