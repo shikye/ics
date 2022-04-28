@@ -25,13 +25,13 @@ static struct rule {
   {" +", TK_NOTYPE},    // spaces
   {"\\+", '+'},         // plus
   {"==", TK_EQ},        // equal
-  {"0x[0-9]{1,8}", TK_IMED_HEX },     //HEX 0x___
-  {"[^0x][0-9]+", TK_IMED_DEC},  //DEC nn     //zhengzaibiaodashi youwenti
   {"-", '-'},
   {"\\*", '*'},
   {"/", '/'},
   {"\\(", TK_LEFT_BRA},
-  {"\\)", TK_RIGHT_BRA}
+  {"\\)", TK_RIGHT_BRA},
+  {"0x[0-9]{1,8}", TK_IMED_HEX },     //HEX 0x___
+  {"[^0x][0-9]+", TK_IMED_DEC},  //DEC nn     //zhengzaibiaodashi youwenti
 };
 
 #define NR_REGEX ARRLEN(rules)
