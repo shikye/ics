@@ -251,7 +251,7 @@ void sdb_mainloop(char *argv[]) {
     if(res != exp)
       printf("res = %u, exp = %u\n",res,exp);
     else
-      printf("right! exp = %u",exp);
+      printf("right! exp = %u\n",exp);
     
   }
 
