@@ -66,34 +66,35 @@ static int nr_token __attribute__((used))  = 0;
 
 bool check_parenttheses(int p, int q)
 {
+  int cnt = 1;
   int position = q - 1;
-  int cnt = 0;
-  
   if(tokens[p].type == '(' && tokens[q].type == ')')
-  {  
+  {
     while(position - p)
     {
-      if(tokens[position].type == ')')
-        cnt ++;
       if(tokens[position].type == '(')
         cnt --;
-      position --;
+      else if(tokens[position].type == ')')
+        cnt ++;
+      
+      if(cnt <= 0)
+        return false;
     }
-  if(cnt == 0)
-    return true;
+
+    if(cnt == 1)
+      return true;
+    else
+      return false;
+  }
   else
     return false;
-  }
-  else return false;
 }
 
 word_t eval(int p , int q)
 {
   int position = 0;
-  int right_circle[5] = {-1,-1,-1,-1,-1};
-  int right_cir_cnt = 0;
-  int left_circle[5] = {-1,-1,-1,-1,-1};
-  int left_cir_cnt = 0;
+  int bra_cnt = 0;
+  int left_flag = 0;
   char *ptr;
 
   if( p > q )
@@ -104,52 +105,58 @@ word_t eval(int p , int q)
     else
       return atoi(tokens[p].str);
   }
-  else if(check_parenttheses(p,q) == true){
+
+  if(check_parenttheses(p,q) == true){
     return eval(p+1,q-1);
   }
-  else if(tokens[q].type == '(')
+  
+  if(tokens[q].type == '(')
   {
     return -1;  //fail
   }
-  else if(tokens[q].type == ')')
+
+
+  left_flag = q;
+  if(tokens[q].type == ')')    //find the match '('
   {
+    bra_cnt = 1;
     position = q;
     while(position)
     {
       if(tokens[position].type == ')')
       {
-        right_circle[right_cir_cnt] = position;
-        right_cir_cnt ++;
+        bra_cnt ++;
       }
       if(tokens[position].type == '(')
       {
-        left_circle[left_cir_cnt] = position;
-        left_cir_cnt ++;
-        if(left_cir_cnt > right_cir_cnt)
+        bra_cnt --;
+        if(bra_cnt == 0)
+          left_flag = position;
+        else if(bra_cnt < 0)
           return -1; //fail
       }
+
+      position --;
     }
-    return eval(left_circle[0] , right_circle[0]);
   }
-  else{
-    position = q;
-    while(position)
-    {
-      if(tokens[position].type == '+')
-        return eval(p,position-1)+eval(position+1,q);
-      else if(tokens[position].type == '-')
-        return eval(p,position-1)-eval(position+1,q);
-      position --;
-    }
-    position = q;
-    while(position)
-    {
-      if(tokens[position].type == '*')
-        return eval(p,position-1)*eval(position+1,q);
-      else if(tokens[position].type == '/')
-        return eval(p,position-1)/eval(position+1,q);
-      position --;
-    }
+  
+  while(position)
+  {
+    if(tokens[position].type == '+')
+      return eval(p,position-1)+eval(position+1,q);
+    else if(tokens[position].type == '-')
+      return eval(p,position-1)-eval(position+1,q);
+    position --;
+  }
+
+  position = left_flag;
+  while(position)
+  {
+    if(tokens[position].type == '*')
+      return eval(p,position-1)*eval(position+1,q);
+    else if(tokens[position].type == '/')
+      return eval(p,position-1)/eval(position+1,q);
+    position --;
   }
   return -1; //faill
 }
