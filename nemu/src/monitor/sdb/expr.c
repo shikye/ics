@@ -126,8 +126,6 @@ word_t eval(int p , int q)
 
     if(tokens[position].type == ')')    //find the match '('
     {
-      
-      bra_cnt = 1;
       while(position)
       {
         if(tokens[position].type == ')')
