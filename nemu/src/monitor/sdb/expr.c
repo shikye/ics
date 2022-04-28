@@ -79,6 +79,8 @@ bool check_parenttheses(int p, int q)
       
       if(cnt <= 0)
         return false;
+      
+      position --;
     }
 
     if(cnt == 1)
