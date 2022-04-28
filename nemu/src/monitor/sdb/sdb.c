@@ -256,7 +256,7 @@ void sdb_mainloop(char *argv[]) {
 
   fclose(fp);
 
-  printf("correct!");
+  printf("correct!\n");
   
 
   /* Start engine. */
