@@ -249,7 +249,7 @@ void sdb_mainloop(char *argv[]) {
     exp = expr(expr_value,&flag);
 
     if(res != exp)
-      panic("expr error");
+      printf("res = %u, exp = %u\n",res,exp);
     
   }
 
