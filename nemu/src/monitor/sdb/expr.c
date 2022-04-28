@@ -96,6 +96,8 @@ bool check_parenttheses(int p, int q)
 
 word_t eval(int p , int q)
 {
+
+  word_t res;
   int position = 0;
   int bra_cnt = 0;
   char *ptr;
@@ -152,9 +154,9 @@ word_t eval(int p , int q)
 
 
     if(tokens[position].type == '+')
-      return eval(p,position-1)+eval(position+1,q);
+      return res = eval(p,position-1)+eval(position+1,q);
     else if(tokens[position].type == '-')
-      return eval(p,position-1)-eval(position+1,q);
+      return res = eval(p,position-1)-eval(position+1,q);
 
     position --;
     flag = position - p;
@@ -191,9 +193,9 @@ word_t eval(int p , int q)
 
 
     if(tokens[position].type == '*')
-      return eval(p,position-1)*eval(position+1,q);
+      return res = eval(p,position-1)*eval(position+1,q);
     else if(tokens[position].type == '/')
-      return eval(p,position-1)/eval(position+1,q);
+      return res = eval(p,position-1)/eval(position+1,q);
 
     position --;
     flag = position - p;
