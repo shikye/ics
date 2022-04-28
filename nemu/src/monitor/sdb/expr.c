@@ -100,7 +100,7 @@ word_t eval(int p , int q)
   char *ptr;
 
   if( p > q )
-    return -1; //fail
+    panic("p>q"); //fail
   else if(p == q){
     if(tokens[p].type ==  TK_IMED_HEX)
       return strtol(tokens[p].str,&ptr,16);
@@ -114,7 +114,7 @@ word_t eval(int p , int q)
   
   if(tokens[q].type == '(')
   {
-    return -1;  //fail
+    panic("117");  //fail
   }
 
 
@@ -162,7 +162,7 @@ word_t eval(int p , int q)
 
 
 
-  return -1; //faill
+  panic("165"); //faill
 }
 
 
