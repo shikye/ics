@@ -66,8 +66,24 @@ static int nr_token __attribute__((used))  = 0;
 
 bool check_parenttheses(int p, int q)
 {
+  int position = q - 1;
+  int cnt = 0;
+  
   if(tokens[p].type == '(' && tokens[q].type == ')')
+  {  
+    while(position - p)
+    {
+      if(tokens[position].type == ')')
+        cnt ++;
+      if(tokens[position].type == '(')
+        cnt --;
+      position --;
+    }
+  if(cnt == 0)
     return true;
+  else
+    return false;
+  }
   else return false;
 }
 
