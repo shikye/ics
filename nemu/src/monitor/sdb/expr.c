@@ -73,9 +73,9 @@ bool check_parenttheses(int p, int q)
   {
     while(flag)
     {
-      if(tokens[position].type == '(')
+      if(tokens[flag].type == '(')
         cnt --;
-      else if(tokens[position].type == ')')
+      else if(tokens[flag].type == ')')
         cnt ++;
       
       if(cnt <= 0)
