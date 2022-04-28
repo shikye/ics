@@ -94,7 +94,6 @@ word_t eval(int p , int q)
 {
   int position = 0;
   int bra_cnt = 0;
-  int left_flag = 0;
   char *ptr;
 
   if( p > q )
@@ -116,48 +115,51 @@ word_t eval(int p , int q)
   }
 
 
-  left_flag = q;
-  if(tokens[q].type == ')')    //find the match '('
-  {
-    bra_cnt = 1;
-    position = q;
-    while(position)
-    {
-      if(tokens[position].type == ')')
-      {
-        bra_cnt ++;
-      }
-      if(tokens[position].type == '(')
-      {
-        bra_cnt --;
-        if(bra_cnt == 0)
-          left_flag = position;
-        else if(bra_cnt < 0)
-          return -1; //fail
-      }
 
-      position --;
-    }
-  }
-  
+  position = q;
+
   while(position)
   {
+
+    if(tokens[position].type == ')')    //find the match '('
+    {
+      
+      bra_cnt = 1;
+      while(position)
+      {
+        if(tokens[position].type == ')')
+        {
+          bra_cnt ++;
+        }
+        if(tokens[position].type == '(')
+        {
+          bra_cnt --;
+          if(bra_cnt == 0)
+          {
+            break;
+          }
+        }
+        position --;
+      }
+    }
+
+    
     if(tokens[position].type == '+')
       return eval(p,position-1)+eval(position+1,q);
     else if(tokens[position].type == '-')
       return eval(p,position-1)-eval(position+1,q);
-    position --;
-  }
-
-  position = left_flag;
-  while(position)
-  {
-    if(tokens[position].type == '*')
+    else if(tokens[position].type == '*')
       return eval(p,position-1)*eval(position+1,q);
     else if(tokens[position].type == '/')
       return eval(p,position-1)/eval(position+1,q);
+
+
+
     position --;
   }
+
+
+
   return -1; //faill
 }
 
