@@ -156,11 +156,11 @@ word_t eval(int p , int q)
     if(tokens[position].type == '+')
     {
       res = eval(p,position-1)+eval(position+1,q);
-      return res; 
+      return eval(p,position-1)+eval(position+1,q); 
     }
     else if(tokens[position].type == '-')
     {
-      res = eval(p,position-1)+eval(position+1,q);
+      res = eval(p,position-1)-eval(position+1,q);
       return res; 
     }
 
@@ -200,12 +200,12 @@ word_t eval(int p , int q)
 
     if(tokens[position].type == '*')
     {
-      res = eval(p,position-1)+eval(position+1,q);
+      res = eval(p,position-1)*eval(position+1,q);
       return res; 
     }
     else if(tokens[position].type == '/')
     {
-      res = eval(p,position-1)+eval(position+1,q);
+      res = eval(p,position-1)/eval(position+1,q);
       return res; 
     }
 
