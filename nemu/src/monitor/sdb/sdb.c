@@ -248,13 +248,15 @@ void sdb_mainloop(char *argv[]) {
     res = atoi(result);
     exp = expr(expr_value,&flag);
 
-    if(res == exp)
-      printf("correct!\n");
+    if(res != exp)
+      panic("expr error");
     
   }
 
 
   fclose(fp);
+
+  printf("correct!");
   
 
   /* Start engine. */
