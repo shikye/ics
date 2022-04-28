@@ -137,6 +137,7 @@ word_t eval(int p , int q)
           bra_cnt --;
           if(bra_cnt == 0)
           {
+            position --;
             break;
           }
         }
