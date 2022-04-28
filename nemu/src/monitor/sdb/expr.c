@@ -68,9 +68,10 @@ bool check_parenttheses(int p, int q)
 {
   int cnt = 1;
   int position = q - 1;
+  int flag = position - p;
   if(tokens[p].type == '(' && tokens[q].type == ')')
   {
-    while(position - p)
+    while(flag)
     {
       if(tokens[position].type == '(')
         cnt --;
@@ -80,7 +81,7 @@ bool check_parenttheses(int p, int q)
       if(cnt <= 0)
         return false;
       
-      position --;
+      flag --;
     }
 
     if(cnt == 1)
