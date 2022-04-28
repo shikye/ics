@@ -123,6 +123,7 @@ word_t eval(int p , int q)
 
   position = q;
   flag = position - p;
+  bra_cnt = 0;
   
   while(flag > 0)
   {
@@ -140,7 +141,8 @@ word_t eval(int p , int q)
           bra_cnt --;
           if(bra_cnt == 0)
           {
-            position --;
+            if(position != p)
+              position --;
             break;
           }
         }
@@ -178,7 +180,8 @@ word_t eval(int p , int q)
           bra_cnt --;
           if(bra_cnt == 0)
           {
-            position --;
+            if(position != p)
+              position --;
             break;
           }
         }
