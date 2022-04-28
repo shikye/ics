@@ -146,17 +146,46 @@ word_t eval(int p , int q)
       }
     }
 
-    
+
     if(tokens[position].type == '+')
       return eval(p,position-1)+eval(position+1,q);
     else if(tokens[position].type == '-')
       return eval(p,position-1)-eval(position+1,q);
-    else if(tokens[position].type == '*')
+
+    position --;
+  }
+
+  position = q;
+
+  while(position)
+  {
+
+    if(tokens[position].type == ')')    //find the match '('
+    {
+      while(position)
+      {
+        if(tokens[position].type == ')')
+        {
+          bra_cnt ++;
+        }
+        if(tokens[position].type == '(')
+        {
+          bra_cnt --;
+          if(bra_cnt == 0)
+          {
+            position --;
+            break;
+          }
+        }
+        position --;
+      }
+    }
+
+
+    if(tokens[position].type == '*')
       return eval(p,position-1)*eval(position+1,q);
     else if(tokens[position].type == '/')
       return eval(p,position-1)/eval(position+1,q);
-
-
 
     position --;
   }
