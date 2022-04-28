@@ -99,6 +99,7 @@ word_t eval(int p , int q)
   int position = 0;
   int bra_cnt = 0;
   char *ptr;
+  int flag = 0;
 
   if( p > q )
     panic("p>q"); //fail
@@ -121,8 +122,9 @@ word_t eval(int p , int q)
 
 
   position = q;
-
-  while(position)
+  flag = position - p;
+  
+  while(flag > 0)
   {
 
     if(tokens[position].type == ')')    //find the match '('
@@ -153,11 +155,13 @@ word_t eval(int p , int q)
       return eval(p,position-1)-eval(position+1,q);
 
     position --;
+    flag = position - p;
   }
 
   position = q;
+  flag = position - p;
 
-  while(position)
+  while(flag > 0)
   {
 
     if(tokens[position].type == ')')    //find the match '('
@@ -188,6 +192,7 @@ word_t eval(int p , int q)
       return eval(p,position-1)/eval(position+1,q);
 
     position --;
+    flag = position - p;
   }
 
 
