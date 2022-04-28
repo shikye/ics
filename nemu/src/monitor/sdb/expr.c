@@ -154,9 +154,17 @@ word_t eval(int p , int q)
 
 
     if(tokens[position].type == '+')
-      return res = eval(p,position-1)+eval(position+1,q);
+    {
+      res = eval(p,position-1)+eval(position+1,q);
+      printf("%u",res);
+      return res; 
+    }
     else if(tokens[position].type == '-')
-      return res = eval(p,position-1)-eval(position+1,q);
+    {
+      res = eval(p,position-1)+eval(position+1,q);
+      printf("%u",res);
+      return res; 
+    }
 
     position --;
     flag = position - p;
@@ -193,9 +201,17 @@ word_t eval(int p , int q)
 
 
     if(tokens[position].type == '*')
-      return res = eval(p,position-1)*eval(position+1,q);
+    {
+      res = eval(p,position-1)+eval(position+1,q);
+      printf("%u",res);
+      return res; 
+    }
     else if(tokens[position].type == '/')
-      return res = eval(p,position-1)/eval(position+1,q);
+    {
+      res = eval(p,position-1)+eval(position+1,q);
+      printf("%u",res);
+      return res; 
+    }
 
     position --;
     flag = position - p;
