@@ -94,10 +94,10 @@ bool check_parenttheses(int p, int q)
     return false;
 }
 
-word_t eval(int p , int q)
+int eval(int p , int q)
 {
 
-  word_t res;
+  int res;
   int position = 0;
   int bra_cnt = 0;
   char *ptr;
